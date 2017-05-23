@@ -41,7 +41,7 @@ class Pong():
 		self.direction = [0,0]
 
 		# Velocidade com qual o pong se move em cada eixo.
-		self.speed = [2,4]
+		self.speed = [4,0]
 		
 		# Verifica se o pong batou na esquerda.
 		self.hitEdgeLeft = False
@@ -78,8 +78,13 @@ class Pong():
 			self.direction[0] *= - 1
 			self.hitEdgeRight = True
 
-		if self.rect.colliderect(jogador.rect) or self.rect.colliderect(computador.rect):
-			self.direction[0] *= -1
+		if self.rect.colliderect(jogador.rect):
+			self.direction[0] = -1
+			self.speed[1] = 3
+			self.speed[0] = randint(2,8)
+		if self.rect.colliderect(computador.rect):
+			self.direction[0] = 1
+			self.speed[1] = 3
 			self.speed[0] = randint(2,8)
 
 class Paddle():
@@ -92,7 +97,7 @@ class Paddle():
 		self.radiusxy = [5, 30]
 
 		self.direction = 0
-		self.speed = 6
+		self.speed = 4
 
 		self.rect = pygame.Rect(self.centerx - self.radiusxy[0],
 								self.centery - self.radiusxy[1],
@@ -100,6 +105,7 @@ class Paddle():
 
 	def render(self, screen):
 		pygame.draw.rect(screen, self.color, self.rect, 0)
+	
 	def update(self):
 		self.centery += self.direction * self.speed
 		if self.centery - self.radiusxy[1] <= 0:
@@ -112,7 +118,15 @@ class Paddle():
 			self.rect.top = 0
 		if self.rect.bottom >= self.screensize[1] - 1:
 			self.rect.bottom = self.screensize[1] - 1
+	'''	
+	def update(self, pong):
+		if self.rect.top > pong.rect.top:
+			self.centery -= self.speed
+		elif self.rect.bottom < pong.rect.bottom:
+			self.centery += self.speed
 
+		self.rect.center = (self.centerx, self.centery)
+	'''
 class AIPaddle():
 	def __init__(self, screensize):
 		self.screensize = screensize
@@ -121,7 +135,7 @@ class AIPaddle():
 
 		self.color = WHITE
 		self.radiusxy = [5, 30]
-		self.speed = 6
+		self.speed = 4
 
 		self.rect = pygame.Rect(self.centerx - self.radiusxy[0],
 								self.centery - self.radiusxy[1],
@@ -129,7 +143,9 @@ class AIPaddle():
 
 	def render(self, screen):
 		pygame.draw.rect(screen, self.color, self.rect, 0)
+
 	def update(self, pong):
+		self.speed = randint(3,4)
 		if self.rect.top > pong.rect.top:
 			self.centery -= self.speed
 		elif self.rect.bottom < pong.rect.bottom:
@@ -149,6 +165,9 @@ def main():
 	# Definimos o título da janela
 	pygame.display.set_caption("Pong")
 
+	# Define uma fonte de systema.
+	myfont = pygame.font.SysFont("monospace", 16)
+
 	# Indicamos o tamanho da janela utilizando uma tupla
 	# com os tamanhos (largura, altura)
 	screensize = (640,480)
@@ -162,6 +181,7 @@ def main():
 	# e para isso utilizamos um objeto próprio do pygame
 	# chamado de Clock()
 	clock = pygame.time.Clock()
+
 
 	# Aqui criamos uma instancia de cada objeto necessário
 	# para o jogo
@@ -181,7 +201,8 @@ def main():
 	# facilmente como o jogo é executado
 	running = True
 
-	score = 0
+	scoreJogador = 0
+	scoreComputador = 0
 
 	while running:
 		# Temos que dizer ao jogo quantos Frames Por Segundo desejamos.
@@ -214,6 +235,8 @@ def main():
 		jogador.update()
 		computador.update(pong)
 
+		
+
 		# Função fora do escopo da criação do jogo, ela serve
 		# para gerar uma linha "cortada". Usada como:
 		# draw_dashed_line(surf, color, start_pos, end_pos, width, dash_length)
@@ -226,6 +249,7 @@ def main():
 		pong.render(screen)
 		jogador.render(screen)
 		computador.render(screen)
+		myfont.render("Hello", 1, WHITE)
 
 		# Mandamos o Pygame mostrar tudo o que foi desenhado nesta iteração
 		# do jogo.
