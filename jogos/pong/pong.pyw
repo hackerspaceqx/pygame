@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import pygame
 from dashLine import *
+from random import randint
 from pygame.locals import *
 
 # Definindo as cores que serão utilizadas em nosso jogo
@@ -41,6 +42,7 @@ class Pong():
 
 		# Velocidade com qual o pong se move em cada eixo.
 		self.speed = [2,4]
+		
 		# Verifica se o pong batou na esquerda.
 		self.hitEdgeLeft = False
 		# Verifica se o pong batou na direita.
@@ -53,7 +55,7 @@ class Pong():
 		# haverá uma borda nesse objeto.
 		pygame.draw.rect(screen, self.color, self.rect, 0)
 
-	def update(self):
+	def update(self, jogador, computador):
 		# Atualiza a posição X e Y andando na direção escolhida
 		# com a velocidade atual.
 		self.centerx += self.direction[0] * self.speed[0]
@@ -62,6 +64,79 @@ class Pong():
 		# Atualiza o novo centro do retângulo de acordo com o
 		# calculo feito anteriormente.
 		self.rect.center = (self.centerx, self.centery)
+
+		if self.rect.top <= 0:
+			self.rect.top = 0
+			self.direction[1] *= -1
+		if self.rect.bottom >= self.screensize[1] - 1:
+			self.rect.bottom = self.screensize[1] - 1
+			self.direction[1] *= -1
+		if self.rect.left <= 0:
+			self.direction[0] *= - 1
+			self.hitEdgeLeft = True
+		if self.rect.right >= self.screensize[0] - 1:
+			self.direction[0] *= - 1
+			self.hitEdgeRight = True
+
+		if self.rect.colliderect(jogador.rect) or self.rect.colliderect(computador.rect):
+			self.direction[0] *= -1
+			self.speed[0] = randint(2,8)
+
+class Paddle():
+	def __init__(self, screensize):
+		self.screensize = screensize
+		self.centerx = screensize[0] - 16
+		self.centery = int(screensize[1]*0.5)
+
+		self.color = WHITE
+		self.radiusxy = [5, 30]
+
+		self.direction = 0
+		self.speed = 6
+
+		self.rect = pygame.Rect(self.centerx - self.radiusxy[0],
+								self.centery - self.radiusxy[1],
+								self.radiusxy[0]*2, self.radiusxy[1]*2)
+
+	def render(self, screen):
+		pygame.draw.rect(screen, self.color, self.rect, 0)
+	def update(self):
+		self.centery += self.direction * self.speed
+		if self.centery - self.radiusxy[1] <= 0:
+			self.centery = self.radiusxy[1]
+		elif self.centery + self.radiusxy[1] >= self.screensize[1] - 1:
+			self.centery = self.screensize[1] - 1 - self.radiusxy[1]
+		self.rect.center = (self.centerx, self.centery)
+
+		if self.rect.top <= 0:
+			self.rect.top = 0
+		if self.rect.bottom >= self.screensize[1] - 1:
+			self.rect.bottom = self.screensize[1] - 1
+
+class AIPaddle():
+	def __init__(self, screensize):
+		self.screensize = screensize
+		self.centerx = 16
+		self.centery = int(screensize[1]*0.5)
+
+		self.color = WHITE
+		self.radiusxy = [5, 30]
+		self.speed = 6
+
+		self.rect = pygame.Rect(self.centerx - self.radiusxy[0],
+								self.centery - self.radiusxy[1],
+								self.radiusxy[0]*2, self.radiusxy[1]*2)
+
+	def render(self, screen):
+		pygame.draw.rect(screen, self.color, self.rect, 0)
+	def update(self, pong):
+		if self.rect.top > pong.rect.top:
+			self.centery -= self.speed
+		elif self.rect.bottom < pong.rect.bottom:
+			self.centery += self.speed
+
+		self.rect.center = (self.centerx, self.centery)
+
 
 
 # Definimos uma função principal que será responsável pela
@@ -91,10 +166,16 @@ def main():
 	# Aqui criamos uma instancia de cada objeto necessário
 	# para o jogo
 
+	# Barra do jogador
+	jogador = Paddle(screensize)
+
+	# Barra do computador
+	computador = AIPaddle(screensize)
+
 	# Bola do pong
 	pong = Pong(screensize)
 	# Definimos uma direção inicial
-	pong.direction = [1,1]
+	pong.direction = [-1,-1]
 
 	# Esta variável serve para que possamos tratar mais
 	# facilmente como o jogo é executado
@@ -109,15 +190,29 @@ def main():
 		clock.tick(60)
 
 		# Precisamos também tratar todos os eventos que ocorrem em nosso
-		# jogo, como: fechamento da janela, botão apertado, etc.
+		# jogo, como: fechamento da janelaf, botão apertado, etc.
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				running = False
+			if event.type == KEYDOWN:
+				if event.key == K_UP:
+					jogador.direction = -1
+				elif event.key == K_DOWN:
+					jogador.direction = 1
+			if event.type == KEYUP:
+				if event.key == K_UP and jogador.direction == -1:
+					jogador.direction = 0
+				elif event.key == K_DOWN and jogador.direction == 1:
+					jogador.direction = 0
 
 		# Após cada iteração do jogo, devemos limpar a tela anterior,
 		# se não, o jogo ficaria sendo desenhado por cima do anterior,
-		# e não queremos isso.
+		# e não queremos isso.f
 		screen.fill(BLACK)
+
+		pong.update(jogador, computador)
+		jogador.update()
+		computador.update(pong)
 
 		# Função fora do escopo da criação do jogo, ela serve
 		# para gerar uma linha "cortada". Usada como:
@@ -129,6 +224,8 @@ def main():
 		# função render() que servirá para que eles sejam desenhados na
 		# tela e passamos a nossa tela como um parâmetro.
 		pong.render(screen)
+		jogador.render(screen)
+		computador.render(screen)
 
 		# Mandamos o Pygame mostrar tudo o que foi desenhado nesta iteração
 		# do jogo.
