@@ -178,7 +178,8 @@ def main():
 	clock = pygame.time.Clock()
 
 	# Define uma fonte de systema.
-	myfont = pygame.font.Font("font/8-BIT WONDER.ttf", 50)
+	# myfont = pygame.font.Font("/font/8-BIT WONDER.ttf", 50)
+	myfont = pygame.font.SysFont("monospace", 50)
 	# Define um texto com a fonte escolhida e uma cor.
 	myText = myfont.render("Game Over", 0, WHITE)
 	# Pega o retângulo externo do texto criado e muda o
