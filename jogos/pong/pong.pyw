@@ -199,6 +199,8 @@ def main():
 	# Bola do pong
 	pong = Pong(screensize)
 	# Definimos uma direção inicial
+	# Depois podemos definir para o jogador apertar para o lado que ele
+	# deseja que a bola possa ir.
 	pong.direction = [-1,-1]
 
 	# Esta variável serve para que possamos tratar mais
