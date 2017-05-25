@@ -44,7 +44,7 @@ class Pong():
 		self.speed = [4,0]
 
 		# Guardamos uma contagem para aumentar a Velocidade
-		#self.counter = 0
+		self.counter = 0
 
 		# Verifica se o pong batou na esquerda.
 		self.hitEdgeLeft = False
@@ -84,11 +84,13 @@ class Pong():
 		if self.rect.colliderect(jogador.rect):
 			self.direction[0] = -1
 			self.speed[1] = 3
-			self.speed[0] = randint(2,8)
+			self.counter = (self.counter + 1) / 10
+			self.speed[0] = randint(2 + self.counter, 8 + self.counter)
 		if self.rect.colliderect(computador.rect):
 			self.direction[0] = 1
 			self.speed[1] = 3
-			self.speed[0] = randint(2,8)
+			self.counter = (self.counter + 1) / 10
+			self.speed[0] = randint(2 + self.counter, 8 + self.counter)
 
 class Paddle():
 	def __init__(self, screensize):
@@ -121,15 +123,7 @@ class Paddle():
 			self.rect.top = 0
 		if self.rect.bottom >= self.screensize[1] - 1:
 			self.rect.bottom = self.screensize[1] - 1
-	'''
-	def update(self, pong):
-		if self.rect.top > pong.rect.top:
-			self.centery -= self.speed
-		elif self.rect.bottom < pong.rect.bottom:
-			self.centery += self.speed
 
-		self.rect.center = (self.centerx, self.centery)
-	'''
 class AIPaddle():
 	def __init__(self, screensize):
 		self.screensize = screensize
@@ -169,9 +163,6 @@ def main():
 	# Definimos o título da janela
 	pygame.display.set_caption("Pong")
 
-	# Define uma fonte de systema.
-	myfont = pygame.font.SysFont("monospace", 16)
-
 	# Indicamos o tamanho da janela utilizando uma tupla
 	# com os tamanhos (largura, altura)
 	screensize = (640,480)
@@ -185,6 +176,19 @@ def main():
 	# e para isso utilizamos um objeto próprio do pygame
 	# chamado de Clock()
 	clock = pygame.time.Clock()
+
+	# Define uma fonte de systema.
+	myfont = pygame.font.Font("font/8-BIT WONDER.ttf", 50)
+	# Define um texto com a fonte escolhida e uma cor.
+	myText = myfont.render("Game Over", 0, WHITE)
+	# Pega o retângulo externo do texto criado e muda o
+	# centro dele em uma nova instância.
+	rect = myText.get_rect(center=(int(screensize[0]*0.5), int(screensize[1]*0.5)))
+
+	# Ver instruções acima.
+	myText2 = myfont.render("You Win", 0, WHITE)
+	rect2 = myText2.get_rect(center=(int(screensize[0]*0.5), int(screensize[1]*0.5)))
+	#go = pygame.image.load("images/gameOver.png")
 
 
 	# Aqui criamos uma instancia de cada objeto necessário
@@ -206,6 +210,7 @@ def main():
 	# Esta variável serve para que possamos tratar mais
 	# facilmente como o jogo é executado
 	running = True
+	fim = False
 
 	scoreJogador = 0
 	scoreComputador = 0
@@ -226,6 +231,14 @@ def main():
 					jogador.direction = -1
 				elif event.key == K_DOWN:
 					jogador.direction = 1
+				elif event.key == K_SPACE and fim == True:
+					pong = Pong(screensize)
+					jogador = Paddle(screensize)
+					computador = AIPaddle(screensize)
+					pong.direction = [-1,-1]
+					scoreJogador = 0
+					scoreComputador = 0
+					fim = False
 			if event.type == KEYUP:
 				if event.key == K_UP and jogador.direction == -1:
 					jogador.direction = 0
@@ -237,9 +250,16 @@ def main():
 		# e não queremos isso.f
 		screen.fill(BLACK)
 
-		pong.update(jogador, computador)
-		jogador.update()
-		computador.update(pong)
+		if pong.hitEdgeRight:
+			screen.blit(myText, rect)
+			fim = True
+		elif pong.hitEdgeLeft:
+			screen.blit(myText2, rect2)
+			fim = True
+		else:
+			pong.update(jogador, computador)
+			jogador.update()
+			computador.update(pong)
 
 
 
@@ -255,7 +275,6 @@ def main():
 		pong.render(screen)
 		jogador.render(screen)
 		computador.render(screen)
-		myfont.render("Hello", 1, WHITE)
 
 		# Mandamos o Pygame mostrar tudo o que foi desenhado nesta iteração
 		# do jogo.
