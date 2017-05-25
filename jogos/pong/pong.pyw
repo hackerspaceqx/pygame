@@ -16,16 +16,16 @@ class Pong():
 		# OBS: Não podemos guardar a tela como parâmetro pois isso
 		# geraria conflito com os outros objetos e a referência
 		# para esta janela não seria guardada.
-		
+
 		# Armazenamos o tamanho da janela dentro do proprio objeto
 		# para que não seja preciso passá-la como parâmetro de uma
 		# função depois.
 		self.screensize = screensize
-		
+
 		# Gerando as posições centrais do pong.
 		self.centerx = int(screensize[0]*0.5)
 		self.centery = int(screensize[1]*0.5)
-		
+
 		# Tamanho do raio.
 		self.radius = 5
 
@@ -42,7 +42,10 @@ class Pong():
 
 		# Velocidade com qual o pong se move em cada eixo.
 		self.speed = [4,0]
-		
+
+		# Guardamos uma contagem para aumentar a Velocidade
+		#self.counter = 0
+
 		# Verifica se o pong batou na esquerda.
 		self.hitEdgeLeft = False
 		# Verifica se o pong batou na direita.
@@ -105,7 +108,7 @@ class Paddle():
 
 	def render(self, screen):
 		pygame.draw.rect(screen, self.color, self.rect, 0)
-	
+
 	def update(self):
 		self.centery += self.direction * self.speed
 		if self.centery - self.radiusxy[1] <= 0:
@@ -118,7 +121,7 @@ class Paddle():
 			self.rect.top = 0
 		if self.rect.bottom >= self.screensize[1] - 1:
 			self.rect.bottom = self.screensize[1] - 1
-	'''	
+	'''
 	def update(self, pong):
 		if self.rect.top > pong.rect.top:
 			self.centery -= self.speed
@@ -146,10 +149,11 @@ class AIPaddle():
 
 	def update(self, pong):
 		self.speed = randint(3,4)
-		if self.rect.top > pong.rect.top:
-			self.centery -= self.speed
-		elif self.rect.bottom < pong.rect.bottom:
-			self.centery += self.speed
+		if pong.direction[0] == -1:
+			if self.rect.top > pong.rect.top:
+				self.centery -= self.speed
+			elif self.rect.bottom < pong.rect.bottom:
+				self.centery += self.speed
 
 		self.rect.center = (self.centerx, self.centery)
 
@@ -235,7 +239,7 @@ def main():
 		jogador.update()
 		computador.update(pong)
 
-		
+
 
 		# Função fora do escopo da criação do jogo, ela serve
 		# para gerar uma linha "cortada". Usada como:
