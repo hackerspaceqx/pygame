@@ -57,6 +57,8 @@ def main():
             if evento.type == pygame.QUIT:
                 rodando = False
 
+            print evento.type
+
         # Para cada vez que uma iteração for tratada o jogo precisa
         # apagar o que tinha anteriormente na janela. Para isso a
         # primeira coisa que tratamos em nosso jogo é o fundo e nesse
