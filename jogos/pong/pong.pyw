@@ -66,6 +66,7 @@ class Pong():
 
 		# Atualiza o novo centro do retângulo de acordo com o
 		# calculo feito anteriormente.
+		
 		self.rect.center = (self.centerx, self.centery)
 
 		if self.rect.top <= 0:
