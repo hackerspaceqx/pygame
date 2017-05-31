@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 #importação das bibliotecas
 import pygame, sys
 from pygame.locals import *
@@ -56,6 +53,7 @@ class snake(pygame.sprite.Sprite):
         self.criarCorpo()
         self.time = 1
         self.zona = zona
+        self.venceu = False
 
     def criarCorpo(self):
         self.corpo.append(pygame.Rect(self.posX - self.distancia, self.posY - self.distancia, self.tamanho, self.tamanho))
@@ -68,7 +66,7 @@ class snake(pygame.sprite.Sprite):
     def mover(self, direcao):
         posIAx = self.corpo[0].x
         posIAy = self.corpo[0].y
-        if(self.vida == True):
+        if(self.vida == True and self.venceu == False):
             if (direcao == "esquerda" and (self.direcao != "direita")):
                 if(self.corpo[0].left > 0):
                     self.corpo[0].x -= self.distancia + self.tamanho
@@ -135,11 +133,15 @@ class snake(pygame.sprite.Sprite):
                     i = i + 1
                 self.direcao = direcao
 
-    def update(self,tempo):
+    def update(self, tempo):
         self.colidirCorpo()
-        if(self.time == tempo):
+        if (self.time == tempo):
             self.mover(self.direcao)
             self.time += 1
+
+    def update2(self):
+        self.colidirCorpo()
+        self.mover(self.direcao)
 
     def comerFruta(self,fruta):
         for i in range(0,len(self.corpo)):
@@ -190,16 +192,17 @@ def cenario():
     fruta1 = fruta(zona1)
 
     #fonte
-    fonteJogo = pygame.font.SysFont("Arial",80)
+    fonteJogo = pygame.font.SysFont("Arial",50)
     TextoGameOver = fonteJogo.render("Game Over",0,(255,255,255))
-    TextoWins = fonteJogo.render("Jogodor Venceu",0,(255,255,255))
+    TextoWins = fonteJogo.render("Jogador Venceu",0,(255,255,255))
 
 
     jogo = True
-
+    relogio = pygame.time.Clock()
 
     #loop infinito
     while True:
+        relogio.tick(5)
         janela.fill(black)
         Tempo = pygame.time.get_ticks() / 1000
         #for para leitura dos eventos
@@ -211,33 +214,37 @@ def cenario():
             if jogo == True:
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == K_LEFT:
-                        cobra.mover("esquerda")
+                        cobra.direcao = "esquerda"
+#                        cobra.mover("esquerda")
                     if evento.key == K_RIGHT:
-                        cobra.mover("direita")
+                        cobra.direcao = "direita"
+#                        cobra.mover("direita")
                     if evento.key == K_UP:
-                        cobra.mover("cima")
+                        cobra.direcao = "cima"
+#                        cobra.mover("cima")
                     if evento.key == K_DOWN:
-                        cobra.mover("baixo")
+                        cobra.direcao = "baixo"
+#                        cobra.mover("baixo")
 
-
-        cobra.update(int(Tempo))
+#        cobra.update(int(Tempo))
+        cobra.update2()
 
         janela.fill(black)
         zona1.desenhar(janela,cor1)
 
-        cobra.desenhar(janela,cor2,cor3)
-
         fruta1.desenhar(janela,black)
+
+        cobra.desenhar(janela,cor2,cor3)
 
         cobra.comerFruta(fruta1)
 
         if cobra.vida == False:
             jogo = False
         if jogo == False:
-            #pygame.mixer.music.fadeout(3000)
             janela.blit(TextoGameOver,(100,altura/2.5))
         if cobra.tamanhoCorpo == (len(zona1.lista1) - 1):
             janela.blit(TextoWins, (100, altura / 2.5))
+            cobra.venceu = True
 
         pygame.display.update()
 
