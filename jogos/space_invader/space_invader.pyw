@@ -13,8 +13,8 @@ class naveEspacial(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.ImagemNave = pygame.image.load("../_img/nave.jpg")
-        self.ImagemExplosao = pygame.image.load("../_img/Explosao.jpg")
+        self.ImagemNave = pygame.image.load("_img/nave.jpg")
+        self.ImagemExplosao = pygame.image.load("_img/Explosao.jpg")
 
 
         self.rect = self.ImagemNave.get_rect()
@@ -52,7 +52,7 @@ class naveEspacial(pygame.sprite.Sprite):
 
     def disparar(self,posX,posY):
         if self.vitoria == False:
-            tiroNave = tiro(posX, posY, "../_img/tiroA.jpg", True)
+            tiroNave = tiro(posX, posY, "_img/tiroA.jpg", True)
             self.listaDisparo.append(tiroNave)
 
     def destruicao(self):
@@ -166,26 +166,26 @@ class inimigo(pygame.sprite.Sprite):
 
     def disparar(self):
         x,y = self.rect.center
-        tiroInimigo = tiro(x, y, "../_img/tiroB.jpg", False)
+        tiroInimigo = tiro(x, y, "_img/tiroB.jpg", False)
         self.listaTiros.append(tiroInimigo)
 
 def carregarInimigos():
     #invasor = inimigo(100, 100, 100,"../_img/MarcianoA.jpg","../_img/MarcianoB.jpg")
     posx = 100
     for x in range(1, 5):
-        invasor = inimigo(posx, 100, 40, "../_img/MarcianoA.jpg", "../_img/MarcianoB.jpg")
+        invasor = inimigo(posx, 100, 40, "_img/MarcianoA.jpg", "_img/MarcianoB.jpg")
         listaInimigos.append(invasor)
         posx = posx + 200
 
     posx = 100
     for x in range(1, 5):
-        invasor = inimigo(posx, 0, 40, "../_img/Marciano2A.jpg", "../_img/Marciano2B.jpg")
+        invasor = inimigo(posx, 0, 40, "_img/Marciano2A.jpg", "_img/Marciano2B.jpg")
         listaInimigos.append(invasor)
         posx = posx + 200
 
     posx = 100
     for x in range(1, 5):
-        invasor = inimigo(posx, - 100, 40, "../_img/Marciano3A.jpg", "../_img/Marciano3B.jpg")
+        invasor = inimigo(posx, - 100, 40, "_img/Marciano3A.jpg", "_img/Marciano3B.jpg")
         listaInimigos.append(invasor)
         posx = posx + 200
 
@@ -203,7 +203,7 @@ def SpaceInvader():
     #defini o titulo
     pygame.display.set_caption("Space Invader")
     #Plano de fundp
-    ImagemFundo = pygame.image.load("../_img/Fundo.jpg")
+    ImagemFundo = pygame.image.load("_img/Fundo.jpg")
 
 
     #musica
