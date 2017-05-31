@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 #importação das bibliotecas
 import pygame, sys
 from pygame.locals import *

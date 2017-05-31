@@ -84,12 +84,12 @@ class Pong():
 		if self.rect.colliderect(jogador.rect):
 			self.direction[0] = -1
 			self.speed[1] = 3
-			self.counter = (self.counter + 1) / 10
+			self.counter = int((self.counter + 1) / 10)
 			self.speed[0] = randint(2 + self.counter, 8 + self.counter)
 		if self.rect.colliderect(computador.rect):
 			self.direction[0] = 1
 			self.speed[1] = 3
-			self.counter = (self.counter + 1) / 10
+			self.counter = int((self.counter + 1) / 10)
 			self.speed[0] = randint(2 + self.counter, 8 + self.counter)
 
 class Paddle():
@@ -267,7 +267,8 @@ def main():
 		# Função fora do escopo da criação do jogo, ela serve
 		# para gerar uma linha "cortada". Usada como:
 		# draw_dashed_line(surf, color, start_pos, end_pos, width, dash_length)
-		draw_dashed_line(screen, WHITE, (int(screensize[0]*0.5), 10), (int(screensize[0]*0.5), screensize[1]-1), 5, screensize[1]/20)
+		#draw_dashed_line(screen, WHITE, (int(screensize[0]*0.5), 10), (int(screensize[0]*0.5), screensize[1]-1), 5, screensize[1]/20)
+		pygame.draw.line(screen, WHITE, (int(screensize[0]*0.5), 10), (int(screensize[0]*0.5), screensize[1]-1))
 
 
 		# Mandamos um sinal para cada objeto do nosso jogo que possui a
