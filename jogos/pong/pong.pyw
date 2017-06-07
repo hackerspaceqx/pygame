@@ -268,8 +268,8 @@ def main():
 		# Função fora do escopo da criação do jogo, ela serve
 		# para gerar uma linha "cortada". Usada como:
 		# draw_dashed_line(surf, color, start_pos, end_pos, width, dash_length)
-		#draw_dashed_line(screen, WHITE, (int(screensize[0]*0.5), 10), (int(screensize[0]*0.5), screensize[1]-1), 5, screensize[1]/20)
-		pygame.draw.line(screen, WHITE, (int(screensize[0]*0.5), 10), (int(screensize[0]*0.5), screensize[1]-1))
+		draw_dashed_line(screen, WHITE, (int(screensize[0]*0.5), 10), (int(screensize[0]*0.5), screensize[1]-1), 5, screensize[1]/20)
+                #		pygame.draw.line(screen, WHITE, (int(screensize[0]*0.5), 10), (int(screensize[0]*0.5), screensize[1]-1))
 
 
 		# Mandamos um sinal para cada objeto do nosso jogo que possui a

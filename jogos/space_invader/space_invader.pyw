@@ -16,13 +16,13 @@ class naveEspacial(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-<<<<<<< HEAD
+        #<<<<<<< HEAD
         self.ImagemNave = pygame.image.load("_img/nave.jpg")
         self.ImagemExplosao = pygame.image.load("_img/Explosao.jpg")
-=======
-        self.ImagemNave = pygame.image.load("//../_img/nave.jpg")
+        #=======
+        self.ImagemNave = pygame.image.load("/_img/nave.jpg")
         self.ImagemExplosao = pygame.image.load("//../_img/Explosao.jpg")
->>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
+        #>>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
 
 
         self.rect = self.ImagemNave.get_rect()
@@ -60,16 +60,16 @@ class naveEspacial(pygame.sprite.Sprite):
 
     def disparar(self,posX,posY):
         if self.vitoria == False:
-<<<<<<< HEAD
+        #<<<<<<< HEAD
             tiroNave = tiro(posX, posY, "_img/tiroA.jpg", True)
-=======
+        #=======
             tiroNave = tiro(posX, posY, "/../_img/tiroA.jpg", True)
->>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
+        #>>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
             self.listaDisparo.append(tiroNave)
 
     def destruicao(self):
         if self.vitoria == False:
-#           self.somExplosao.play()
+            ##           self.somExplosao.play()
             self.Vida = False
             self.velocidade = 0
             self.ImagemNave = self.ImagemExplosao
@@ -178,42 +178,42 @@ class inimigo(pygame.sprite.Sprite):
 
     def disparar(self):
         x,y = self.rect.center
-<<<<<<< HEAD
+        #<<<<<<< HEAD
         tiroInimigo = tiro(x, y, "_img/tiroB.jpg", False)
-=======
+        #=======
         tiroInimigo = tiro(x, y, "/../_img/tiroB.jpg", False)
->>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
+        #>>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
         self.listaTiros.append(tiroInimigo)
 
 def carregarInimigos():
     #invasor = inimigo(100, 100, 100,"/../_img/MarcianoA.jpg","/../_img/MarcianoB.jpg")
     posx = 100
     for x in range(1, 5):
-<<<<<<< HEAD
+        #<<<<<<< HEAD
         invasor = inimigo(posx, 100, 40, "_img/MarcianoA.jpg", "_img/MarcianoB.jpg")
-=======
+        #=======
         invasor = inimigo(posx, 100, 40, "/../_img/MarcianoA.jpg", "/../_img/MarcianoB.jpg")
->>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
+        #>>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
         listaInimigos.append(invasor)
         posx = posx + 200
 
     posx = 100
     for x in range(1, 5):
-<<<<<<< HEAD
+        #<<<<<<< HEAD
         invasor = inimigo(posx, 0, 40, "_img/Marciano2A.jpg", "_img/Marciano2B.jpg")
-=======
+        #=======
         invasor = inimigo(posx, 0, 40, "/../_img/Marciano2A.jpg", "/../_img/Marciano2B.jpg")
->>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
+        #>>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
         listaInimigos.append(invasor)
         posx = posx + 200
 
     posx = 100
     for x in range(1, 5):
-<<<<<<< HEAD
+        #<<<<<<< HEAD
         invasor = inimigo(posx, - 100, 40, "_img/Marciano3A.jpg", "_img/Marciano3B.jpg")
-=======
+        #=======
         invasor = inimigo(posx, - 100, 40, "/../_img/Marciano3A.jpg", "/../_img/Marciano3B.jpg")
->>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
+        #>>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
         listaInimigos.append(invasor)
         posx = posx + 200
 
@@ -231,11 +231,11 @@ def SpaceInvader():
     #defini o titulo
     pygame.display.set_caption("Space Invader")
     #Plano de fundp
-<<<<<<< HEAD
+        #<<<<<<< HEAD
     ImagemFundo = pygame.image.load("_img/Fundo.jpg")
-=======
+        #=======
     ImagemFundo = pygame.image.load("/../_img/Fundo.jpg")
->>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
+        #>>>>>>> 8fc4b32f31cea333ffc490368be43c045090d022
 
 
     #musica
@@ -336,8 +336,8 @@ def SpaceInvader():
             janela.blit(TextoGameOver,(380,altura/2.3))
         if jogador.vitoria == True:
             janela.blit(TextoWins, (380, altura / 2.3))
-#            musicaVitoria = pygame.mixer.music("url")
-#            musicaVitoria.play()
+            #            musicaVitoria = pygame.mixer.music("url")
+            #            musicaVitoria.play()
 
         #atualizada da tela
         pygame.display.update()
