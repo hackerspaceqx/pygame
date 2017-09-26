@@ -1,2 +1,3 @@
 # pygame
-Repositório para postagem dos códigos de jogos desenvolvidos utilizando Pygame
+Repositório para postagem dos códigos de jogos desenvolvidos utilizando Pygame.
+Projeto Finalizado.
